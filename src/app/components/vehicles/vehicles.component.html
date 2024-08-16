@@ -1,0 +1,27 @@
+<h2>Entrada de Vehículo</h2>
+<form (ngSubmit)="submit()">
+  <div>
+    <label for="licensePlate">Placa:</label>
+    <input id="licensePlate" [(ngModel)]="vehicle.licensePlate" name="licensePlate" required>
+  </div>
+  <div>
+    <label for="type">Tipo de Vehículo:</label>
+    <select id="type" [(ngModel)]="vehicle.type" name="type" required>
+      <option value="MOTORCYCLE">Motocicleta</option>
+      <option value="CAR">Vehículo Ligero</option>
+    </select>
+  </div>
+  <div>
+    <label for="isElectricOrHybrid">¿Es Eléctrico o Híbrido?</label>
+    <input id="isElectricOrHybrid" type="checkbox" [(ngModel)]="vehicle.isElectricOrHybrid" name="isElectricOrHybrid">
+  </div>
+  <div>
+    <label for="entryTime">Hora de Entrada:</label>
+    <input id="entryTime" type="datetime-local" [(ngModel)]="vehicle.entryTime" name="entryTime" required>
+  </div>
+  <div>
+    <label for="parkingSpotId">ID de Plaza de Estacionamiento:</label>
+    <input id="parkingSpotId" type="number" [(ngModel)]="vehicle.parkingSpotId" name="parkingSpotId" required>
+  </div>
+  <button type="submit">Registrar Vehículo</button>
+</form>
