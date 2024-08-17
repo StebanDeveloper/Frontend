@@ -9,27 +9,12 @@ import { ParkingSpot } from './../modelos/Parking.model';
 })
 export class ParkingService {
 
-  private apiUrl = `${environment.apiBaseUrl}/parking-spots`;
+  private apiUrl = `${environment.apiBaseUrl}`; 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getParkingSpots(): Observable<ParkingSpot[]> {
-    return this.http.get<ParkingSpot[]>(this.apiUrl);
+  getAvailableParkingSpots(): Observable<ParkingSpot[]> {
+    return this.http.get<ParkingSpot[]>(`${this.apiUrl}/available`);
   }
 
-  getParkingSpot(id: number): Observable<ParkingSpot> {
-    return this.http.get<ParkingSpot>(`${this.apiUrl}/${id}`);
-  }
-
-  addParkingSpot(spot: ParkingSpot): Observable<ParkingSpot> {
-    return this.http.post<ParkingSpot>(this.apiUrl, spot);
-  }
-
-  updateParkingSpot(spot: ParkingSpot): Observable<ParkingSpot> {
-    return this.http.put<ParkingSpot>(`${this.apiUrl}/${spot.id}`, spot);
-  }
-
-  deleteParkingSpot(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
 }

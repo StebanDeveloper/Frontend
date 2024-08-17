@@ -1,27 +1,71 @@
-<h2>Entrada de Vehículo</h2>
-<form (ngSubmit)="submit()">
-  <div>
-    <label for="licensePlate">Placa:</label>
-    <input id="licensePlate" [(ngModel)]="vehicle.licensePlate" name="licensePlate" required>
-  </div>
-  <div>
-    <label for="type">Tipo de Vehículo:</label>
-    <select id="type" [(ngModel)]="vehicle.type" name="type" required>
-      <option value="MOTORCYCLE">Motocicleta</option>
-      <option value="CAR">Vehículo Ligero</option>
-    </select>
-  </div>
-  <div>
-    <label for="isElectricOrHybrid">¿Es Eléctrico o Híbrido?</label>
-    <input id="isElectricOrHybrid" type="checkbox" [(ngModel)]="vehicle.isElectricOrHybrid" name="isElectricOrHybrid">
-  </div>
-  <div>
-    <label for="entryTime">Hora de Entrada:</label>
-    <input id="entryTime" type="datetime-local" [(ngModel)]="vehicle.entryTime" name="entryTime" required>
-  </div>
-  <div>
-    <label for="parkingSpotId">ID de Plaza de Estacionamiento:</label>
-    <input id="parkingSpotId" type="number" [(ngModel)]="vehicle.parkingSpotId" name="parkingSpotId" required>
-  </div>
-  <button type="submit">Registrar Vehículo</button>
-</form>
+<div>
+    <h1>Agregar Vehículo</h1>
+    <form (ngSubmit)="addVehicle()">
+      <label for="licensePlate">Placa:</label>
+      <input id="licensePlate" [(ngModel)]="vehicle.licensePlate" name="licensePlate" required>
+      
+      <label for="type">Tipo:</label>
+      <select id="type" [(ngModel)]="vehicle.type" name="type" required (change)="onVehicleTypeChange()">
+        <option value="MOTORCYCLE">Motocicleta</option>
+        <option value="CAR">Carro</option>
+      </select>
+      
+      <!-- Mostrar solo si es un Vehículo Ligero -->
+      <div *ngIf="showElectricOrHybridField">
+        <label for="isElectricOrHybrid">Eléctrico o Híbrido:</label>
+        <input id="isElectricOrHybrid" type="checkbox" [(ngModel)]="vehicle.isElectricOrHybrid" name="isElectricOrHybrid">
+      </div>
+      
+      <!-- Mostrar la plaza asignada -->
+      <p>Plaza Asignada: {{ vehicle.parkingSpotId }}</p>
+      
+      <button type="submit">Añadir Vehículo</button>
+    </form>
+    
+    <!-- Tabla de plazas disponibles -->
+    <h2>Plazas Disponibles</h2>
+    <table *ngIf="availableParkingSpots.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let spot of availableParkingSpots">
+          <td>{{ spot.id }}</td>
+          <td>{{ spot.spotType }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="availableParkingSpots.length === 0">No hay plazas disponibles.</p>
+    
+    <!-- Lista de vehículos y botón para finalizar tiempo -->
+    <h2>Vehículos Registrados</h2>
+    <table *ngIf="registeredVehicles.length > 0">
+      <thead>
+        <tr>
+          <th>Placa</th>
+          <th>Tipo</th>
+          <th>Entrada</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vehicle of registeredVehicles">
+          <td>{{ vehicle.licensePlate }}</td>
+          <td>{{ vehicle.type }}</td>
+          <td>{{ vehicle.entryTime }}</td>
+          <td>
+            <button *ngIf="vehicle.id !== undefined" (click)="finalizeVehicle(vehicle.id ?? 0)">Finalizar Tiempo</button>
+            <button  *ngIf="vehicle.id !== undefined"  (click)="deleteVehicle(vehicle.id)">Eliminar</button>
+
+        </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="registeredVehicles.length === 0">No hay vehículos registrados.</p>
+
+    <button (click)="finalizeAllVehicles()">Finalizar Todos los Vehículos y Calcular Ganancias</button>
+
+</div>
